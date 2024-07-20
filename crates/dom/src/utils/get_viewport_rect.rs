@@ -13,7 +13,7 @@ pub fn get_viewport_rect(element: &Element, _strategy: Strategy) -> Rect {
     let width = html.client_width() as f64;
     let height = html.client_height() as f64;
 
-    // TODO: visual viewport
+    // TODO: leptos-test-visual viewport
 
     Rect {
         x,

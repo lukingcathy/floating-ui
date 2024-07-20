@@ -21,8 +21,8 @@ Rust Floating UI is available for these Rust frameworks:
 
 Each framework has an implementations of the [Floating UI tutorial](https://floating-ui.com/docs/tutorial) as an example:
 
-- [DOM](crates/dom/example)
-- [Leptos](crates/leptos/example)
+- [DOM](examples/floating-ui-dom)
+- [Leptos](examples/floating-ui-leptos)
 
 Additionally, implementations of [Floating UI tests](https://github.com/floating-ui/floating-ui/tree/master/packages/dom/test) are more complex examples:
 

@@ -1,6 +1,6 @@
 [workspace]
-members = ["crates/*", "crates/*/example", "crates/*/tests/*", "scripts"]
 resolver = "2"
+members = ["crates/*", "examples/*", "playwright/*", "scripts"]
 
 [workspace.package]
 authors = ["Rust For Web <info@rustforweb.org>"]

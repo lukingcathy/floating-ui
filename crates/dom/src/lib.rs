@@ -4,15 +4,11 @@
 //!
 //! See [@floating-ui/dom](https://www.npmjs.com/package/@floating-ui/dom) for the original package.
 
-mod auto_update;
-mod middleware;
-mod platform;
-mod types;
-mod utils;
+use web_sys::Element;
 
-pub use crate::auto_update::*;
-pub use crate::middleware::*;
-pub use crate::types::*;
+use floating_ui_core::{
+    compute_position as compute_position_core, ComputePositionConfig as CoreComputePositionConfig,
+};
 pub use floating_ui_core::{
     Boundary, ComputePositionReturn, Derivable, DerivableFn, DetectOverflowOptions, ElementContext,
     Middleware, MiddlewareData, MiddlewareReturn, MiddlewareState, MiddlewareWithOptions,
@@ -25,12 +21,17 @@ pub use floating_ui_utils::{
     VirtualElement,
 };
 
-use floating_ui_core::{
-    compute_position as compute_position_core, ComputePositionConfig as CoreComputePositionConfig,
-};
-use web_sys::Element;
+pub use crate::auto_update::*;
+pub use crate::middleware::*;
+pub use crate::types::*;
 
 use self::platform::Platform;
+
+mod auto_update;
+mod middleware;
+mod platform;
+mod types;
+mod utils;
 
 const PLATFORM: Platform = Platform {};
 
