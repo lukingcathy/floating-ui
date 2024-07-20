@@ -14,6 +14,3 @@ mod compute_position;
 mod detect_overflow;
 pub mod middleware;
 mod types;
-
-#[cfg(test)]
-mod test_utils;
