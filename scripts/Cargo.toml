@@ -19,3 +19,10 @@ strum = { version = "0.26.2", features = ["derive"] }
 tempfile = "3.10.1"
 tokio = { version = "1.37.0", features = ["full"] }
 toml = "0.8.12"
+
+[lib]
+path = "lib.rs"
+
+[[bin]]
+name = "upstream"
+path = "bin/upstream.rs"

@@ -14,19 +14,19 @@ Rust port of [Floating UI](https://floating-ui.com).
 
 Rust Floating UI is available for these Rust frameworks:
 
--   [DOM](./packages/dom) ([`web-sys`](https://rustwasm.github.io/wasm-bindgen/web-sys/index.html))
--   [Leptos](./packages/leptos)
+- [DOM](crates/dom) ([`web-sys`](https://rustwasm.github.io/wasm-bindgen/web-sys/index.html))
+- [Leptos](crates/leptos)
 
 ## Examples
 
 Each framework has an implementations of the [Floating UI tutorial](https://floating-ui.com/docs/tutorial) as an example:
 
--   [DOM](./packages/dom/example)
--   [Leptos](./packages/leptos/example)
+- [DOM](crates/dom/example)
+- [Leptos](crates/leptos/example)
 
 Additionally, implementations of [Floating UI tests](https://github.com/floating-ui/floating-ui/tree/master/packages/dom/test) are more complex examples:
 
--   [Leptos](./packages/leptos/tests)
+- [Leptos](crates/leptos/tests)
 
 ## Documentation
 
