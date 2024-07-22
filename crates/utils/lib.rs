@@ -26,20 +26,20 @@ pub enum Side {
 
 impl Side {
     pub fn opposite(&self) -> Side {
+        use Side::{Bottom, Left, Right, Top};
         match self {
-            Side::Top => Side::Bottom,
-            Side::Right => Side::Left,
-            Side::Bottom => Side::Top,
-            Side::Left => Side::Right,
+            Top => Bottom,
+            Right => Left,
+            Bottom => Top,
+            Left => Right,
         }
     }
 
     pub fn axis(&self) -> Axis {
+        use Side::{Bottom, Left, Right, Top};
         match self {
-            Side::Top => Axis::Y,
-            Side::Right => Axis::X,
-            Side::Bottom => Axis::Y,
-            Side::Left => Axis::X,
+            Top | Bottom => Axis::Y,
+            Right | Left => Axis::X,
         }
     }
 }
@@ -74,70 +74,69 @@ pub enum Placement {
 
 impl Placement {
     pub fn alignment(&self) -> Option<Alignment> {
+        use Placement::{
+            Bottom, BottomEnd, BottomStart, Left, LeftEnd, LeftStart, Right, RightEnd, RightStart,
+            Top, TopEnd, TopStart,
+        };
         match self {
-            Placement::Top => None,
-            Placement::TopStart => Some(Alignment::Start),
-            Placement::TopEnd => Some(Alignment::End),
-            Placement::Right => None,
-            Placement::RightStart => Some(Alignment::Start),
-            Placement::RightEnd => Some(Alignment::End),
-            Placement::Bottom => None,
-            Placement::BottomStart => Some(Alignment::Start),
-            Placement::BottomEnd => Some(Alignment::End),
-            Placement::Left => None,
-            Placement::LeftStart => Some(Alignment::Start),
-            Placement::LeftEnd => Some(Alignment::End),
+            Top | Bottom | Left | Right => None,
+            TopStart | BottomStart | LeftStart | RightStart => Some(Alignment::Start),
+            TopEnd | BottomEnd | LeftEnd | RightEnd => Some(Alignment::End),
         }
     }
 
     pub fn side(&self) -> Side {
+        use Placement::{
+            Bottom, BottomEnd, BottomStart, Left, LeftEnd, LeftStart, Right, RightEnd, RightStart,
+            Top, TopEnd, TopStart,
+        };
         match self {
-            Placement::Top => Side::Top,
-            Placement::TopStart => Side::Top,
-            Placement::TopEnd => Side::Top,
-            Placement::Right => Side::Right,
-            Placement::RightStart => Side::Right,
-            Placement::RightEnd => Side::Right,
-            Placement::Bottom => Side::Bottom,
-            Placement::BottomStart => Side::Bottom,
-            Placement::BottomEnd => Side::Bottom,
-            Placement::Left => Side::Left,
-            Placement::LeftStart => Side::Left,
-            Placement::LeftEnd => Side::Left,
+            Top | TopStart | TopEnd => Side::Top,
+            Right | RightStart | RightEnd => Side::Right,
+            Bottom | BottomStart | BottomEnd => Side::Bottom,
+            Left | LeftStart | LeftEnd => Side::Left,
         }
     }
 
     pub fn opposite(&self) -> Placement {
+        use Placement::{
+            Bottom, BottomEnd, BottomStart, Left, LeftEnd, LeftStart, Right, RightEnd, RightStart,
+            Top, TopEnd, TopStart,
+        };
         match self {
-            Placement::Top => Placement::Bottom,
-            Placement::TopStart => Placement::BottomStart,
-            Placement::TopEnd => Placement::BottomEnd,
-            Placement::Right => Placement::Left,
-            Placement::RightStart => Placement::LeftStart,
-            Placement::RightEnd => Placement::LeftEnd,
-            Placement::Bottom => Placement::Top,
-            Placement::BottomStart => Placement::TopStart,
-            Placement::BottomEnd => Placement::TopEnd,
-            Placement::Left => Placement::Right,
-            Placement::LeftStart => Placement::RightStart,
-            Placement::LeftEnd => Placement::RightEnd,
+            Top => Bottom,
+            TopStart => BottomStart,
+            TopEnd => BottomEnd,
+            Right => Left,
+            RightStart => LeftStart,
+            RightEnd => LeftEnd,
+            Bottom => Top,
+            BottomStart => TopStart,
+            BottomEnd => TopEnd,
+            Left => Right,
+            LeftStart => RightStart,
+            LeftEnd => RightEnd,
         }
     }
 
     pub fn opposite_alignment(&self) -> Placement {
+        use Placement::{
+            Bottom, BottomEnd, BottomStart, Left, LeftEnd, LeftStart, Right, RightEnd, RightStart,
+            Top, TopEnd, TopStart,
+        };
         match self {
-            Placement::Top => Placement::Top,
-            Placement::TopStart => Placement::TopEnd,
-            Placement::TopEnd => Placement::TopStart,
-            Placement::Right => Placement::Right,
-            Placement::RightStart => Placement::RightEnd,
-            Placement::RightEnd => Placement::RightStart,
-            Placement::Bottom => Placement::Bottom,
-            Placement::BottomStart => Placement::BottomEnd,
-            Placement::BottomEnd => Placement::BottomStart,
-            Placement::Left => Placement::Left,
-            Placement::LeftStart => Placement::LeftEnd,
-            Placement::LeftEnd => Placement::LeftStart,
+            Top => Top,
+            TopStart => TopEnd,
+            TopEnd => TopStart,
+            Right => Right,
+            RightStart => RightEnd,
+            RightEnd => RightStart,
+            Bottom => Bottom,
+            BottomStart => BottomEnd,
+            BottomEnd => BottomStart,
+            Left => Left,
+            LeftStart => LeftEnd,
+            LeftEnd => LeftStart,
         }
     }
 }
@@ -175,16 +174,18 @@ pub enum Axis {
 
 impl Axis {
     pub fn opposite(&self) -> Axis {
+        use Axis::{X, Y};
         match self {
-            Axis::X => Axis::Y,
-            Axis::Y => Axis::X,
+            X => Y,
+            Y => X,
         }
     }
 
     pub fn length(&self) -> Length {
+        use Axis::{X, Y};
         match self {
-            Axis::X => Length::Width,
-            Axis::Y => Length::Height,
+            X => Length::Width,
+            Y => Length::Height,
         }
     }
 }
@@ -201,9 +202,10 @@ impl Coords {
     }
 
     pub fn axis(&self, axis: Axis) -> f64 {
+        use Axis::{X, Y};
         match axis {
-            Axis::X => self.x,
-            Axis::Y => self.y,
+            X => self.x,
+            Y => self.y,
         }
     }
 
@@ -236,9 +238,10 @@ pub struct Dimensions {
 
 impl Dimensions {
     pub fn length(&self, length: Length) -> f64 {
+        use Length::{Height, Width};
         match length {
-            Length::Width => self.width,
-            Length::Height => self.height,
+            Width => self.width,
+            Height => self.height,
         }
     }
 }
@@ -253,11 +256,12 @@ pub struct SideObject {
 
 impl SideObject {
     pub fn side(&self, side: Side) -> f64 {
+        use Side::{Bottom, Left, Right, Top};
         match side {
-            Side::Top => self.top,
-            Side::Right => self.right,
-            Side::Bottom => self.bottom,
-            Side::Left => self.left,
+            Top => self.top,
+            Right => self.right,
+            Bottom => self.bottom,
+            Left => self.left,
         }
     }
 }
@@ -280,16 +284,18 @@ pub struct Rect {
 
 impl Rect {
     pub fn axis(&self, axis: Axis) -> f64 {
+        use Axis::{X, Y};
         match axis {
-            Axis::X => self.x,
-            Axis::Y => self.y,
+            X => self.x,
+            Y => self.y,
         }
     }
 
     pub fn length(&self, length: Length) -> f64 {
+        use Length::{Height, Width};
         match length {
-            Length::Width => self.width,
-            Length::Height => self.height,
+            Width => self.width,
+            Height => self.height,
         }
     }
 }
@@ -513,8 +519,8 @@ impl<Element> OwnedElementOrVirtual<Element> {
     pub fn resolve(self) -> Option<Element> {
         match self {
             OwnedElementOrVirtual::Element(element) => Some(element),
-            OwnedElementOrVirtual::VirtualElement(virtal_element) => {
-                virtal_element.context_element()
+            OwnedElementOrVirtual::VirtualElement(virtual_element) => {
+                virtual_element.context_element()
             }
         }
     }
