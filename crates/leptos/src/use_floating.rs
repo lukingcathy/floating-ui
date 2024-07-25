@@ -182,26 +182,24 @@ pub fn use_floating<
     let update_reference = reference.clone();
     let update = move || {
         if let Some(reference) = update_reference.get_untracked() {
-            if let Some(reference_element) = reference.get_untracked() {
-                if let Some(floating_element) = floating.get_untracked_as_element() {
-                    let config = ComputePositionConfig {
-                        placement: Some(placement_option_untracked()),
-                        strategy: Some(strategy_option_untracked()),
-                        middleware: middleware_option_untracked(),
-                    };
+            if let (Some(reference_element), Some(floating_element)) = (
+                reference.get_untracked(),
+                floating.get_untracked_as_element(),
+            ) {
+                let config = ComputePositionConfig {
+                    placement: Some(placement_option_untracked()),
+                    strategy: Some(strategy_option_untracked()),
+                    middleware: middleware_option_untracked(),
+                };
 
-                    let position = compute_position(
-                        (&reference_element).into(),
-                        &floating_element,
-                        Some(config),
-                    );
-                    set_x.set(position.x);
-                    set_y.set(position.y);
-                    set_strategy.set(position.strategy);
-                    set_placement.set(position.placement);
-                    set_middleware_data.set(position.middleware_data);
-                    set_is_positioned.set(true);
-                }
+                let position =
+                    compute_position((&reference_element).into(), &floating_element, Some(config));
+                set_x.set(position.x);
+                set_y.set(position.y);
+                set_strategy.set(position.strategy);
+                set_placement.set(position.placement);
+                set_middleware_data.set(position.middleware_data);
+                set_is_positioned.set(true);
             }
         }
     };
@@ -226,19 +224,19 @@ pub fn use_floating<
     let attach = move || {
         attach_cleanup_rc();
 
-        if let Some(while_elements_mounted) = while_elements_mounted_untracked() {
-            if let Some(reference) = attach_reference.get_untracked() {
-                if let Some(reference_element) = reference.get_untracked() {
-                    if let Some(floating_element) = floating.get_untracked_as_element() {
-                        attach_while_elements_mounted_cleanup.replace(Some(
-                            while_elements_mounted(
-                                (&reference_element).into(),
-                                &floating_element,
-                                attach_update_rc.clone(),
-                            ),
-                        ));
-                    }
-                }
+        if let (Some(while_elements_mounted), Some(reference)) = (
+            while_elements_mounted_untracked(),
+            attach_reference.get_untracked(),
+        ) {
+            if let (Some(reference_element), Some(floating_element)) = (
+                reference.get_untracked(),
+                floating.get_untracked_as_element(),
+            ) {
+                attach_while_elements_mounted_cleanup.replace(Some(while_elements_mounted(
+                    (&reference_element).into(),
+                    &floating_element,
+                    attach_update_rc.clone(),
+                )));
             }
         } else {
             attach_update_rc();
@@ -336,7 +334,6 @@ pub fn use_floating<
 #[cfg(test)]
 mod tests {
     use leptos::{*, html::Div};
-    use leptos::View::Component;
     use wasm_bindgen_test::*;
 
     use super::*;
