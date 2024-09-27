@@ -99,18 +99,9 @@ impl<Element: Clone> DefaultVirtualElement<Element> {
     }
 }
 
-// impl<Element: Clone> Clone for DefaultVirtualElement<Element> {
-//     fn clone(&self) -> Self {
-//         Self {
-//             get_bounding_client_rect: dyn_clone::clone_box(&*self.get_bounding_client_rect),
-//             context_element: self.context_element.clone(),
-//         }
-//     }
-// }
-
 impl<Element: Clone> VirtualElement<Element> for DefaultVirtualElement<Element> {
     fn get_bounding_client_rect(&self) -> ClientRect {
-        (self.get_bounding_client_rect).call()
+        self.get_bounding_client_rect.call()
     }
 
     fn get_client_rects(&self) -> Option<Vec<ClientRect>> {
