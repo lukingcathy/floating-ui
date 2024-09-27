@@ -5,194 +5,21 @@
 //! See [@floating-ui/utils](https://www.npmjs.com/package/@floating-ui/utils) for the original package.
 
 pub use crate::coordinate::*;
+pub use crate::length::*;
 pub use crate::orientation::*;
+pub use crate::padding::*;
+pub use crate::rect::*;
 pub use crate::strategy::*;
 use dyn_clone::DynClone;
-use serde::{Deserialize, Serialize};
 
 mod coordinate;
 #[cfg(feature = "dom")]
 pub mod dom;
+mod length;
 mod orientation;
+mod padding;
+mod rect;
 mod strategy;
-
-/// 元素长度标识
-#[derive(Copy, Clone, Debug, PartialEq)]
-pub enum Length {
-    /// 宽，矩形的长度
-    Width,
-    /// 高，矩形的宽度
-    Height,
-}
-
-/// 维度，宽度和长度的具体数值
-#[derive(Clone, Debug)]
-pub struct Dimensions {
-    /// 宽度
-    pub width: f64,
-    /// 高度
-    pub height: f64,
-}
-
-impl Dimensions {
-    /// 根据元素长度标识获取对应的维度值
-    pub fn length(&self, length: Length) -> f64 {
-        use Length::{Height, Width};
-        match length {
-            Width => self.width,
-            Height => self.height,
-        }
-    }
-}
-
-/// 元素各边长度
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SideLength {
-    /// 上
-    pub top: f64,
-    /// 右
-    pub right: f64,
-    /// 下
-    pub bottom: f64,
-    /// 左
-    pub left: f64,
-}
-
-impl SideLength {
-    /// 根据指定的边获取对应的长度
-    pub fn side(&self, side: Side) -> f64 {
-        use Side::{Bottom, Left, Right, Top};
-        match side {
-            Top => self.top,
-            Right => self.right,
-            Bottom => self.bottom,
-            Left => self.left,
-        }
-    }
-}
-
-/// 部分元素的各边长度
-#[derive(Clone, Debug)]
-pub struct PartialSideLength {
-    pub top: Option<f64>,
-    pub right: Option<f64>,
-    pub bottom: Option<f64>,
-    pub left: Option<f64>,
-}
-
-/// 矩形，将元素抽象称为一个矩形
-#[derive(Clone, Debug)]
-pub struct Rect {
-    /// X 坐标值
-    pub x: f64,
-    /// Y 坐标值
-    pub y: f64,
-    /// 宽度
-    pub width: f64,
-    /// 高度
-    pub height: f64,
-}
-
-impl Rect {
-    /// 通过指定的坐标轴，获取对应坐标值
-    pub fn axis(&self, axis: Axis) -> f64 {
-        use Axis::{X, Y};
-        match axis {
-            X => self.x,
-            Y => self.y,
-        }
-    }
-
-    /// 通过指定长度标识，获取元素对应边的长度
-    pub fn length(&self, length: Length) -> f64 {
-        use Length::{Height, Width};
-        match length {
-            Width => self.width,
-            Height => self.height,
-        }
-    }
-}
-
-/// 填充的方式
-#[derive(Clone, Debug)]
-pub enum Padding {
-    /// 全部填充
-    All(f64),
-    /// 指定方位
-    PerSide(PartialSideLength),
-}
-
-/// 元素对应的各个点的值
-#[derive(Clone, Debug)]
-pub struct ClientRect {
-    /// X 坐标值
-    pub x: f64,
-    /// Y 坐标值
-    pub y: f64,
-    /// 宽度
-    pub width: f64,
-    /// 高度
-    pub height: f64,
-    /// 上
-    pub top: f64,
-    /// 右
-    pub right: f64,
-    /// 下
-    pub bottom: f64,
-    /// 左
-    pub left: f64,
-}
-
-impl From<Rect> for ClientRect {
-    fn from(value: Rect) -> Self {
-        ClientRect {
-            x: value.x,
-            y: value.y,
-            width: value.width,
-            height: value.height,
-            top: value.y,
-            right: value.x + value.width,
-            bottom: value.y + value.height,
-            left: value.x,
-        }
-    }
-}
-
-cfg_if::cfg_if! {
-    if #[cfg(feature = "dom")] {
-        impl ClientRect {
-            pub fn from_dom_rect_list(value: web_sys::DomRectList) -> Vec<Self> {
-                (0..value.length())
-                    .filter_map(|i| value.item(i).map(ClientRect::from))
-                    .collect()
-            }
-        }
-
-        impl From<web_sys::DomRect> for ClientRect {
-            fn from(value: web_sys::DomRect) -> Self {
-                Self {
-                    x: value.x(),
-                    y: value.y(),
-                    width: value.width(),
-                    height: value.height(),
-                    top: value.top(),
-                    right: value.right(),
-                    bottom: value.bottom(),
-                    left: value.left(),
-                }
-            }
-        }
-    }
-}
-
-/// 参与浮动运算的元素对象
-#[derive(Clone, Debug)]
-pub struct ElementRects {
-    /// 引用元素
-    pub reference: Rect,
-    /// 浮动元素
-    pub floating: Rect,
-}
 
 /// Custom positioning reference element.
 ///
