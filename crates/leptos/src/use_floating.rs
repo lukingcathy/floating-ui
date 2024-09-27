@@ -3,7 +3,7 @@ use std::{cell::RefCell, marker::PhantomData, rc::Rc};
 use leptos::{
     create_effect, create_memo, create_signal,
     html::{AnyElement, ElementDescriptor},
-    MaybeProp, NodeRef, on_cleanup, SignalGet, SignalGetUntracked, SignalSet, watch,
+    on_cleanup, watch, MaybeProp, NodeRef, SignalGet, SignalGetUntracked, SignalSet,
 };
 
 use floating_ui_dom::{
@@ -260,7 +260,7 @@ pub fn use_floating<
                 VirtualElementOrNodeRef::NodeRef(reference, _) => {
                     if let Some(reference) = reference.get() {
                         let reference_attach = reference_attach.clone();
-                        _ = reference.on_mount(move |_| {
+                        let _ = reference.on_mount(move |_| {
                             reference_attach();
                         });
                     }
@@ -273,7 +273,7 @@ pub fn use_floating<
     create_effect(move |_| {
         if let Some(floating) = floating.get() {
             let floating_attach = floating_attach.clone();
-            _ = floating.on_mount(move |_| {
+            let _ = floating.on_mount(move |_| {
                 floating_attach();
             });
         }
@@ -286,28 +286,28 @@ pub fn use_floating<
     let placement_update_rc = update_rc.clone();
     let strategy_update_rc = update_rc.clone();
     let middleware_update_rc = update_rc.clone();
-    _ = watch(
+    let _ = watch(
         move || options.placement.get(),
         move |_, _, _| {
             placement_update_rc();
         },
         false,
     );
-    _ = watch(
+    let _ = watch(
         move || options.strategy.get(),
         move |_, _, _| {
             strategy_update_rc();
         },
         false,
     );
-    _ = watch(
+    let _ = watch(
         move || options.middleware.get(),
         move |_, _, _| {
             middleware_update_rc();
         },
         false,
     );
-    _ = watch(
+    let _ = watch(
         move || options.while_elements_mounted.get(),
         move |_, _, _| {
             attach_rc();
@@ -333,7 +333,7 @@ pub fn use_floating<
 
 #[cfg(test)]
 mod tests {
-    use leptos::{*, html::Div};
+    use leptos::{html::Div, *};
     use wasm_bindgen_test::*;
 
     use super::*;
@@ -359,7 +359,7 @@ mod tests {
             }
         }
 
-        let document = leptos::document();
+        let document = document();
         mount_to(document.body().unwrap(), Component);
 
         // assert_eq!(
