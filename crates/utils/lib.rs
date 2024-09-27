@@ -16,19 +16,26 @@ pub mod dom;
 mod orientation;
 mod strategy;
 
+/// 元素长度标识
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum Length {
+    /// 宽，矩形的长度
     Width,
+    /// 高，矩形的宽度
     Height,
 }
 
+/// 维度，宽度和长度的具体数值
 #[derive(Clone, Debug)]
 pub struct Dimensions {
+    /// 宽度
     pub width: f64,
+    /// 高度
     pub height: f64,
 }
 
 impl Dimensions {
+    /// 根据元素长度标识获取对应的维度值
     pub fn length(&self, length: Length) -> f64 {
         use Length::{Height, Width};
         match length {
@@ -38,15 +45,21 @@ impl Dimensions {
     }
 }
 
+/// 元素各边长度
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-pub struct SideObject {
+pub struct SideLength {
+    /// 上
     pub top: f64,
+    /// 右
     pub right: f64,
+    /// 下
     pub bottom: f64,
+    /// 左
     pub left: f64,
 }
 
-impl SideObject {
+impl SideLength {
+    /// 根据指定的边获取对应的长度
     pub fn side(&self, side: Side) -> f64 {
         use Side::{Bottom, Left, Right, Top};
         match side {
@@ -58,23 +71,30 @@ impl SideObject {
     }
 }
 
+/// 部分元素的各边长度
 #[derive(Clone, Debug)]
-pub struct PartialSideObject {
+pub struct PartialSideLength {
     pub top: Option<f64>,
     pub right: Option<f64>,
     pub bottom: Option<f64>,
     pub left: Option<f64>,
 }
 
+/// 矩形，将元素抽象称为一个矩形
 #[derive(Clone, Debug)]
 pub struct Rect {
+    /// X 坐标值
     pub x: f64,
+    /// Y 坐标值
     pub y: f64,
+    /// 宽度
     pub width: f64,
+    /// 高度
     pub height: f64,
 }
 
 impl Rect {
+    /// 通过指定的坐标轴，获取对应坐标值
     pub fn axis(&self, axis: Axis) -> f64 {
         use Axis::{X, Y};
         match axis {
@@ -83,6 +103,7 @@ impl Rect {
         }
     }
 
+    /// 通过指定长度标识，获取元素对应边的长度
     pub fn length(&self, length: Length) -> f64 {
         use Length::{Height, Width};
         match length {
@@ -92,27 +113,39 @@ impl Rect {
     }
 }
 
+/// 填充的方式
 #[derive(Clone, Debug)]
 pub enum Padding {
+    /// 全部填充
     All(f64),
-    PerSide(PartialSideObject),
+    /// 指定方位
+    PerSide(PartialSideLength),
 }
 
+/// 元素对应的各个点的值
 #[derive(Clone, Debug)]
-pub struct ClientRectObject {
+pub struct ClientRect {
+    /// X 坐标值
     pub x: f64,
+    /// Y 坐标值
     pub y: f64,
+    /// 宽度
     pub width: f64,
+    /// 高度
     pub height: f64,
+    /// 上
     pub top: f64,
+    /// 右
     pub right: f64,
+    /// 下
     pub bottom: f64,
+    /// 左
     pub left: f64,
 }
 
-impl From<Rect> for ClientRectObject {
+impl From<Rect> for ClientRect {
     fn from(value: Rect) -> Self {
-        ClientRectObject {
+        ClientRect {
             x: value.x,
             y: value.y,
             width: value.width,
@@ -127,15 +160,15 @@ impl From<Rect> for ClientRectObject {
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "dom")] {
-        impl ClientRectObject {
+        impl ClientRect {
             pub fn from_dom_rect_list(value: web_sys::DomRectList) -> Vec<Self> {
                 (0..value.length())
-                    .filter_map(|i| value.item(i).map(ClientRectObject::from))
+                    .filter_map(|i| value.item(i).map(ClientRect::from))
                     .collect()
             }
         }
 
-        impl From<web_sys::DomRect> for ClientRectObject {
+        impl From<web_sys::DomRect> for ClientRect {
             fn from(value: web_sys::DomRect) -> Self {
                 Self {
                     x: value.x(),
@@ -152,9 +185,12 @@ cfg_if::cfg_if! {
     }
 }
 
+/// 参与浮动运算的元素对象
 #[derive(Clone, Debug)]
 pub struct ElementRects {
+    /// 引用元素
     pub reference: Rect,
+    /// 浮动元素
     pub floating: Rect,
 }
 
@@ -162,9 +198,9 @@ pub struct ElementRects {
 ///
 /// See <https://floating-ui.com/docs/virtual-elements> for the original documentation.
 pub trait VirtualElement<Element>: DynClone {
-    fn get_bounding_client_rect(&self) -> ClientRectObject;
+    fn get_bounding_client_rect(&self) -> ClientRect;
 
-    fn get_client_rects(&self) -> Option<Vec<ClientRectObject>>;
+    fn get_client_rects(&self) -> Option<Vec<ClientRect>>;
 
     fn context_element(&self) -> Option<Element>;
 }
@@ -172,14 +208,14 @@ pub trait VirtualElement<Element>: DynClone {
 dyn_clone::clone_trait_object!(<Element> VirtualElement<Element>);
 
 pub trait GetBoundingClientRectCloneable: DynClone {
-    fn call(&self) -> ClientRectObject;
+    fn call(&self) -> ClientRect;
 }
 
 impl<F> GetBoundingClientRectCloneable for F
 where
-    F: Fn() -> ClientRectObject + Clone,
+    F: Fn() -> ClientRect + Clone,
 {
-    fn call(&self) -> ClientRectObject {
+    fn call(&self) -> ClientRect {
         self()
     }
 }
@@ -187,14 +223,14 @@ where
 dyn_clone::clone_trait_object!(GetBoundingClientRectCloneable);
 
 pub trait GetClientRectsCloneable: DynClone {
-    fn call(&self) -> Vec<ClientRectObject>;
+    fn call(&self) -> Vec<ClientRect>;
 }
 
 impl<F> GetClientRectsCloneable for F
 where
-    F: Fn() -> Vec<ClientRectObject> + Clone,
+    F: Fn() -> Vec<ClientRect> + Clone,
 {
-    fn call(&self) -> Vec<ClientRectObject> {
+    fn call(&self) -> Vec<ClientRect> {
         self()
     }
 }
@@ -246,11 +282,11 @@ impl<Element: Clone> DefaultVirtualElement<Element> {
 // }
 
 impl<Element: Clone> VirtualElement<Element> for DefaultVirtualElement<Element> {
-    fn get_bounding_client_rect(&self) -> ClientRectObject {
+    fn get_bounding_client_rect(&self) -> ClientRect {
         (self.get_bounding_client_rect).call()
     }
 
-    fn get_client_rects(&self) -> Option<Vec<ClientRectObject>> {
+    fn get_client_rects(&self) -> Option<Vec<ClientRect>> {
         self.get_client_rects
             .as_ref()
             .map(|get_client_rects| get_client_rects.call())
@@ -503,8 +539,8 @@ pub fn get_opposite_placement(placement: Placement) -> Placement {
     placement.opposite()
 }
 
-pub fn expand_padding_object(padding: PartialSideObject) -> SideObject {
-    SideObject {
+pub fn expand_padding_object(padding: PartialSideLength) -> SideLength {
+    SideLength {
         top: padding.top.unwrap_or(0.0),
         right: padding.right.unwrap_or(0.0),
         bottom: padding.bottom.unwrap_or(0.0),
@@ -512,9 +548,9 @@ pub fn expand_padding_object(padding: PartialSideObject) -> SideObject {
     }
 }
 
-pub fn get_padding_object(padding: Padding) -> SideObject {
+pub fn get_padding_object(padding: Padding) -> SideLength {
     match padding {
-        Padding::All(padding) => SideObject {
+        Padding::All(padding) => SideLength {
             top: padding,
             right: padding,
             bottom: padding,
@@ -524,8 +560,8 @@ pub fn get_padding_object(padding: Padding) -> SideObject {
     }
 }
 
-pub fn rect_to_client_rect(rect: Rect) -> ClientRectObject {
-    ClientRectObject {
+pub fn rect_to_client_rect(rect: Rect) -> ClientRect {
+    ClientRect {
         x: rect.x,
         y: rect.y,
         width: rect.width,

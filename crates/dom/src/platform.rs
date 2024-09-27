@@ -4,10 +4,10 @@ use floating_ui_core::{
     ConvertOffsetParentRelativeRectToViewportRelativeRectArgs, GetClippingRectArgs,
     GetElementRectsArgs, Platform as CorePlatform,
 };
-use floating_ui_utils::{
-    ClientRectObject, Coords, Dimensions, ElementOrWindow, ElementRects, OwnedElementOrWindow, Rect,
-};
 use floating_ui_utils::dom::get_document_element;
+use floating_ui_utils::{
+    ClientRect, Coords, Dimensions, ElementOrWindow, ElementRects, OwnedElementOrWindow, Rect,
+};
 
 use crate::types::ElementOrVirtual;
 
@@ -69,7 +69,7 @@ impl CorePlatform<Element, Window> for Platform {
         Some(get_document_element(Some(element.into())))
     }
 
-    fn get_client_rects(&self, element: ElementOrVirtual) -> Option<Vec<ClientRectObject>> {
+    fn get_client_rects(&self, element: ElementOrVirtual) -> Option<Vec<ClientRect>> {
         Some(get_client_rects(element))
     }
 

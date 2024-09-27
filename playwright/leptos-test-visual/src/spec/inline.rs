@@ -8,7 +8,7 @@ use leptos::{
 };
 
 use floating_ui_leptos::{
-    use_floating, ClientRectObject, Coords, DefaultVirtualElement, Flip, FlipOptions, Inline,
+    use_floating, ClientRect, Coords, DefaultVirtualElement, Flip, FlipOptions, Inline,
     InlineOptions, MiddlewareVec, Placement, Size, SizeOptions, UseFloatingOptions,
     UseFloatingReturn, VirtualElement, VirtualElementOrNodeRef,
 };
@@ -117,7 +117,7 @@ pub fn Inline() -> impl IntoView {
                                 range.get_bounding_client_rect().into()
                             }))
                             .get_client_rects(Box::new(move || {
-                                ClientRectObject::from_dom_rect_list(
+                                ClientRect::from_dom_rect_list(
                                     range_clone
                                         .get_client_rects()
                                         .expect("Range should have client rects."),

@@ -1,6 +1,6 @@
 use floating_ui_utils::{
-    Coords, ElementOrVirtual, get_padding_object, OwnedElementOrWindow, Padding,
-    Rect, rect_to_client_rect, SideObject,
+    get_padding_object, rect_to_client_rect, Coords, ElementOrVirtual, OwnedElementOrWindow,
+    Padding, Rect, SideLength,
 };
 
 use crate::types::{
@@ -90,7 +90,7 @@ impl<Element> Default for DetectOverflowOptions<Element> {
 pub fn detect_overflow<Element: Clone, Window: Clone>(
     state: MiddlewareState<Element, Window>,
     options: DetectOverflowOptions<Element>,
-) -> SideObject {
+) -> SideLength {
     let MiddlewareState {
         x,
         y,
@@ -179,7 +179,7 @@ pub fn detect_overflow<Element: Clone, Window: Clone>(
             .unwrap_or(rect),
     );
 
-    SideObject {
+    SideLength {
         top: (clipping_client_rect.top - element_client_rect.top + padding_object.top)
             / offset_scale.y,
         right: (element_client_rect.right - clipping_client_rect.right + padding_object.right)

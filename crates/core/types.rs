@@ -5,7 +5,7 @@ use dyn_clone::DynClone;
 use serde::{de::DeserializeOwned, Serialize};
 
 use floating_ui_utils::{
-    ClientRectObject, Coords, Dimensions, ElementOrVirtual, ElementOrWindow, ElementRects, Length,
+    ClientRect, Coords, Dimensions, ElementOrVirtual, ElementOrWindow, ElementRects, Length,
     OwnedElementOrWindow, Placement, Rect, Strategy,
 };
 
@@ -107,10 +107,7 @@ pub trait Platform<Element: Clone, Window: Clone>: Debug {
         None
     }
 
-    fn get_client_rects(
-        &self,
-        _element: ElementOrVirtual<Element>,
-    ) -> Option<Vec<ClientRectObject>> {
+    fn get_client_rects(&self, _element: ElementOrVirtual<Element>) -> Option<Vec<ClientRect>> {
         None
     }
 

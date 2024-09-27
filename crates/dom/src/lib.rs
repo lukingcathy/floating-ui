@@ -16,9 +16,8 @@ pub use floating_ui_core::{
 };
 #[doc(no_inline)]
 pub use floating_ui_utils::{
-    dom, AlignedPlacement, Alignment, Axis, ClientRectObject, Coords, Dimensions, ElementRects,
-    Length, Padding, PartialSideObject, Placement, Rect, Side, SideObject, Strategy,
-    VirtualElement,
+    dom, AlignedPlacement, Alignment, Axis, ClientRect, Coords, Dimensions, ElementRects, Length,
+    Padding, PartialSideLength, Placement, Rect, Side, SideLength, Strategy, VirtualElement,
 };
 
 pub use crate::auto_update::*;

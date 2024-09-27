@@ -1,6 +1,6 @@
 use floating_ui_utils::{
-    Axis, ClientRectObject, Coords, DefaultVirtualElement, ElementOrVirtual, get_padding_object,
-    get_side_axis, Padding, Rect, rect_to_client_rect, Side,
+    get_padding_object, get_side_axis, rect_to_client_rect, Axis, ClientRect, Coords,
+    DefaultVirtualElement, ElementOrVirtual, Padding, Rect, Side,
 };
 
 use crate::types::{
@@ -8,7 +8,7 @@ use crate::types::{
     MiddlewareWithOptions, Reset, ResetRects, ResetValue,
 };
 
-fn get_bounding_rect(rects: Vec<ClientRectObject>) -> Rect {
+fn get_bounding_rect(rects: Vec<ClientRect>) -> Rect {
     let min_x = rects
         .iter()
         .map(|rect| rect.left)
@@ -37,12 +37,12 @@ fn get_bounding_rect(rects: Vec<ClientRectObject>) -> Rect {
     }
 }
 
-fn get_rects_by_line(rects: Vec<ClientRectObject>) -> Vec<ClientRectObject> {
+fn get_rects_by_line(rects: Vec<ClientRect>) -> Vec<ClientRect> {
     let mut sorted_rects = rects.clone();
     sorted_rects.sort_by(|a, b| a.y.total_cmp(&b.y));
 
-    let mut groups: Vec<Vec<ClientRectObject>> = vec![];
-    let mut prev_rect: Option<ClientRectObject> = None;
+    let mut groups: Vec<Vec<ClientRect>> = vec![];
+    let mut prev_rect: Option<ClientRect> = None;
     for rect in sorted_rects {
         if prev_rect.is_none()
             || prev_rect.is_some_and(|prev_rect| rect.y - prev_rect.y > prev_rect.height / 2.0)
@@ -218,7 +218,7 @@ impl<'a, Element: Clone + 'static, Window: Clone> Middleware<Element, Window>
                     let width = right - left;
                     let height = bottom - top;
 
-                    return ClientRectObject {
+                    return ClientRect {
                         x: left,
                         y: top,
                         width,
@@ -241,7 +241,7 @@ impl<'a, Element: Clone + 'static, Window: Clone> Middleware<Element, Window>
                     .map(|rect| rect.left)
                     .reduce(f64::min)
                     .expect("Enough elements exist.");
-                let measure_rects: Vec<&ClientRectObject> = client_rects
+                let measure_rects: Vec<&ClientRect> = client_rects
                     .iter()
                     .filter(|rect| match is_left_side {
                         true => rect.left == min_left,
@@ -256,7 +256,7 @@ impl<'a, Element: Clone + 'static, Window: Clone> Middleware<Element, Window>
                 let width = right - left;
                 let height = bottom - top;
 
-                return ClientRectObject {
+                return ClientRect {
                     x: left,
                     y: top,
                     width,

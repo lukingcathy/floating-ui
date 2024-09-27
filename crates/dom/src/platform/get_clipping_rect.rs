@@ -1,13 +1,13 @@
-use web_sys::{CssStyleDeclaration, Element, Node, wasm_bindgen::JsCast};
+use web_sys::{wasm_bindgen::JsCast, CssStyleDeclaration, Element, Node};
 
 use floating_ui_core::{GetClippingRectArgs, RootBoundary};
 use floating_ui_utils::{
-    ClientRectObject,
     dom::{
         get_computed_style, get_document_element, get_node_name, get_overflow_ancestors,
         get_parent_node, is_containing_block, is_last_traversable_node, is_overflow_element,
         is_top_layer, OverflowAncestor,
-    }, Rect, rect_to_client_rect, Strategy,
+    },
+    rect_to_client_rect, ClientRect, Rect, Strategy,
 };
 
 use crate::{
@@ -44,7 +44,7 @@ fn get_client_rect_from_clipping_ancestor(
     element: &Element,
     clipping_ancestor: ElementOrRootBoundary,
     strategy: Strategy,
-) -> ClientRectObject {
+) -> ClientRect {
     let rect = match clipping_ancestor {
         ElementOrRootBoundary::Element(element) => {
             get_inner_bounding_client_rect(&element, strategy)

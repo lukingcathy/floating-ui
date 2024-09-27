@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use floating_ui_utils::{ALL_SIDES, Rect, SideObject};
+use floating_ui_utils::{Rect, SideLength, ALL_SIDES};
 
 use crate::{
     detect_overflow::{detect_overflow, DetectOverflowOptions},
@@ -10,8 +10,8 @@ use crate::{
     },
 };
 
-fn get_side_offsets(overflow: SideObject, rect: &Rect) -> SideObject {
-    SideObject {
+fn get_side_offsets(overflow: SideLength, rect: &Rect) -> SideLength {
+    SideLength {
         top: overflow.top - rect.height,
         right: overflow.right - rect.width,
         bottom: overflow.bottom - rect.height,
@@ -19,7 +19,7 @@ fn get_side_offsets(overflow: SideObject, rect: &Rect) -> SideObject {
     }
 }
 
-fn is_any_side_fully_clipped(overflow: &SideObject) -> bool {
+fn is_any_side_fully_clipped(overflow: &SideLength) -> bool {
     ALL_SIDES.into_iter().any(|side| overflow.side(side) >= 0.0)
 }
 
@@ -75,9 +75,9 @@ impl<Element: Clone> Default for HideOptions<Element> {
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct HideData {
     pub reference_hidden: Option<bool>,
-    pub reference_hidden_offsets: Option<SideObject>,
+    pub reference_hidden_offsets: Option<SideLength>,
     pub escaped: Option<bool>,
-    pub escaped_offsets: Option<SideObject>,
+    pub escaped_offsets: Option<SideLength>,
 }
 
 /// Provides data to hide the floating element in applicable situations,

@@ -1,6 +1,6 @@
 use floating_ui_utils::{
-    ClientRectObject,
-    Coords, dom::{DomElementOrWindow, get_computed_style, get_window}, Rect, rect_to_client_rect,
+    dom::{get_computed_style, get_window, DomElementOrWindow},
+    rect_to_client_rect, ClientRect, Coords, Rect,
 };
 
 use crate::{
@@ -14,7 +14,7 @@ pub fn get_bounding_client_rect(
     include_scale: bool,
     is_fixed_strategy: bool,
     offset_parent: Option<DomElementOrWindow>,
-) -> ClientRectObject {
+) -> ClientRect {
     let client_rect = match &element_or_virtual {
         ElementOrVirtual::Element(element) => element.get_bounding_client_rect().into(),
         ElementOrVirtual::VirtualElement(virtual_element) => {
