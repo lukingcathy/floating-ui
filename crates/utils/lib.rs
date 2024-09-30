@@ -5,6 +5,7 @@
 //! See [@floating-ui/utils](https://www.npmjs.com/package/@floating-ui/utils) for the original package.
 
 pub use crate::coordinate::*;
+pub use crate::element::*;
 pub use crate::length::*;
 pub use crate::orientation::*;
 pub use crate::padding::*;
@@ -15,6 +16,7 @@ use dyn_clone::DynClone;
 mod coordinate;
 #[cfg(feature = "dom")]
 pub mod dom;
+mod element;
 mod length;
 mod orientation;
 mod padding;
@@ -63,149 +65,6 @@ where
 }
 
 dyn_clone::clone_trait_object!(GetClientRectsCloneable);
-
-#[derive(Clone)]
-pub struct DefaultVirtualElement<Element: Clone> {
-    pub get_bounding_client_rect: Box<dyn GetBoundingClientRectCloneable>,
-    pub get_client_rects: Option<Box<dyn GetClientRectsCloneable>>,
-    pub context_element: Option<Element>,
-}
-
-impl<Element: Clone> DefaultVirtualElement<Element> {
-    pub fn new(get_bounding_client_rect: Box<dyn GetBoundingClientRectCloneable>) -> Self {
-        DefaultVirtualElement {
-            get_bounding_client_rect,
-            get_client_rects: None,
-            context_element: None,
-        }
-    }
-
-    pub fn get_bounding_client_rect(
-        mut self,
-        get_bounding_client_rect: Box<dyn GetBoundingClientRectCloneable>,
-    ) -> Self {
-        self.get_bounding_client_rect = get_bounding_client_rect;
-        self
-    }
-
-    pub fn get_client_rects(mut self, get_client_rects: Box<dyn GetClientRectsCloneable>) -> Self {
-        self.get_client_rects = Some(get_client_rects);
-        self
-    }
-
-    pub fn context_element(mut self, context_element: Element) -> Self {
-        self.context_element = Some(context_element);
-        self
-    }
-}
-
-impl<Element: Clone> VirtualElement<Element> for DefaultVirtualElement<Element> {
-    fn get_bounding_client_rect(&self) -> ClientRect {
-        self.get_bounding_client_rect.call()
-    }
-
-    fn get_client_rects(&self) -> Option<Vec<ClientRect>> {
-        self.get_client_rects
-            .as_ref()
-            .map(|get_client_rects| get_client_rects.call())
-    }
-
-    fn context_element(&self) -> Option<Element> {
-        self.context_element.clone()
-    }
-}
-
-#[derive(Clone)]
-pub enum ElementOrVirtual<'a, Element: Clone> {
-    Element(&'a Element),
-    VirtualElement(Box<dyn VirtualElement<Element>>),
-}
-
-impl<'a, Element: Clone> ElementOrVirtual<'a, Element> {
-    pub fn resolve(self) -> Option<Element> {
-        match self {
-            ElementOrVirtual::Element(element) => Some(element.clone()),
-            ElementOrVirtual::VirtualElement(virtal_element) => virtal_element.context_element(),
-        }
-    }
-}
-
-impl<'a, Element: Clone> From<&'a Element> for ElementOrVirtual<'a, Element> {
-    fn from(value: &'a Element) -> Self {
-        ElementOrVirtual::Element(value)
-    }
-}
-
-impl<'a, Element: Clone> From<Box<dyn VirtualElement<Element>>> for ElementOrVirtual<'a, Element> {
-    fn from(value: Box<dyn VirtualElement<Element>>) -> Self {
-        ElementOrVirtual::VirtualElement(value)
-    }
-}
-
-impl<'a, Element: Clone> From<&'a OwnedElementOrVirtual<Element>>
-    for ElementOrVirtual<'a, Element>
-{
-    fn from(value: &'a OwnedElementOrVirtual<Element>) -> Self {
-        match value {
-            OwnedElementOrVirtual::Element(element) => ElementOrVirtual::Element(element),
-            OwnedElementOrVirtual::VirtualElement(virtual_element) => {
-                ElementOrVirtual::VirtualElement(virtual_element.clone())
-            }
-        }
-    }
-}
-
-#[derive(Clone)]
-pub enum OwnedElementOrVirtual<Element> {
-    Element(Element),
-    VirtualElement(Box<dyn VirtualElement<Element>>),
-}
-
-impl<Element> OwnedElementOrVirtual<Element> {
-    pub fn resolve(self) -> Option<Element> {
-        match self {
-            OwnedElementOrVirtual::Element(element) => Some(element),
-            OwnedElementOrVirtual::VirtualElement(virtual_element) => {
-                virtual_element.context_element()
-            }
-        }
-    }
-}
-
-impl<Element> From<Element> for OwnedElementOrVirtual<Element> {
-    fn from(value: Element) -> Self {
-        OwnedElementOrVirtual::Element(value)
-    }
-}
-
-impl<Element> From<Box<dyn VirtualElement<Element>>> for OwnedElementOrVirtual<Element> {
-    fn from(value: Box<dyn VirtualElement<Element>>) -> Self {
-        OwnedElementOrVirtual::VirtualElement(value)
-    }
-}
-
-#[derive(Clone, Debug)]
-pub enum ElementOrWindow<'a, Element, Window> {
-    Element(&'a Element),
-    Window(&'a Window),
-}
-
-impl<'a, Element, Window> From<&'a OwnedElementOrWindow<Element, Window>>
-    for ElementOrWindow<'a, Element, Window>
-{
-    fn from(value: &'a OwnedElementOrWindow<Element, Window>) -> Self {
-        match value {
-            OwnedElementOrWindow::Element(element) => ElementOrWindow::Element(element),
-            OwnedElementOrWindow::Window(window) => ElementOrWindow::Window(window),
-        }
-    }
-}
-
-#[derive(Clone, Debug)]
-pub enum OwnedElementOrWindow<Element, Window> {
-    Element(Element),
-    Window(Window),
-}
 
 pub const ALL_PLACEMENTS: [Placement; 12] = [
     Placement::Top,
