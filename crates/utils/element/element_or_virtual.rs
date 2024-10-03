@@ -10,7 +10,7 @@ impl<'a, Element: Clone> ElementOrVirtual<'a, Element> {
     pub fn resolve(self) -> Option<Element> {
         match self {
             ElementOrVirtual::Element(element) => Some(element.clone()),
-            ElementOrVirtual::VirtualElement(virtal_element) => virtal_element.context_element(),
+            ElementOrVirtual::VirtualElement(virtual_element) => virtual_element.context_element(),
         }
     }
 }
