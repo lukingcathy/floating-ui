@@ -1,8 +1,8 @@
 use leptos::{html::Div, *};
 
 use floating_ui_leptos::{
-    use_floating, DefaultVirtualElement, Strategy, UseFloatingOptions, UseFloatingReturn,
-    VirtualElement,
+    client_rect::to_client_rect, use_floating, DefaultVirtualElement, Strategy, UseFloatingOptions,
+    UseFloatingReturn, VirtualElement,
 };
 
 use crate::utils::use_scroll::{use_scroll, UseScrollOptions, UseScrollReturn};
@@ -18,7 +18,8 @@ pub fn VirtualElement() -> impl IntoView {
             let element: &web_sys::Element = context_element.as_ref();
             (Box::new(
                 DefaultVirtualElement::new(Box::new(move || {
-                    context_element_clone.get_bounding_client_rect().into()
+                    let dom_rect = context_element_clone.get_bounding_client_rect();
+                    to_client_rect(dom_rect)
                 }))
                 .context_element(element.clone()),
             ) as Box<dyn VirtualElement<web_sys::Element>>)

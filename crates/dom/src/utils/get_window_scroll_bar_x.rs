@@ -1,6 +1,6 @@
 use web_sys::Element;
 
-use floating_ui_utils::dom::{get_document_element, get_node_scroll};
+use crate::dom::{get_document_element, get_node_scroll};
 
 use crate::utils::get_bounding_client_rect::get_bounding_client_rect;
 

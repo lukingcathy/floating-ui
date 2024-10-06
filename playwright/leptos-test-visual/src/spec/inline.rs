@@ -7,13 +7,13 @@ use leptos::{
     *,
 };
 
-use floating_ui_leptos::{
-    use_floating, ClientRect, Coords, DefaultVirtualElement, Flip, FlipOptions, Inline,
-    InlineOptions, MiddlewareVec, Placement, Size, SizeOptions, UseFloatingOptions,
-    UseFloatingReturn, VirtualElement, VirtualElementOrNodeRef,
-};
-
 use crate::utils::all_placements::ALL_PLACEMENTS;
+use floating_ui_leptos::{
+    client_rect::from_dom_rect_list, client_rect::to_client_rect, use_floating, Coords,
+    DefaultVirtualElement, Flip, FlipOptions, Inline, InlineOptions, MiddlewareVec, Placement,
+    Size, SizeOptions, UseFloatingOptions, UseFloatingReturn, VirtualElement,
+    VirtualElementOrNodeRef,
+};
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 enum ConnectedStatus {
@@ -114,10 +114,11 @@ pub fn Inline() -> impl IntoView {
                     reference_signal.set(
                         (Box::new(
                             DefaultVirtualElement::new(Box::new(move || {
-                                range.get_bounding_client_rect().into()
+                                let dom_rect = range.get_bounding_client_rect();
+                                to_client_rect(dom_rect)
                             }))
                             .get_client_rects(Box::new(move || {
-                                ClientRect::from_dom_rect_list(
+                                from_dom_rect_list(
                                     range_clone
                                         .get_client_rects()
                                         .expect("Range should have client rects."),

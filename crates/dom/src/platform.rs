@@ -1,10 +1,10 @@
 use web_sys::{Element, Window};
 
+use crate::dom::get_document_element;
 use floating_ui_core::{
     ConvertOffsetParentRelativeRectToViewportRelativeRectArgs, GetClippingRectArgs,
     GetElementRectsArgs, Platform as CorePlatform,
 };
-use floating_ui_utils::dom::get_document_element;
 use floating_ui_utils::{
     ClientRect, Coords, Dimensions, ElementOrWindow, ElementRects, OwnedElementOrWindow, Rect,
 };

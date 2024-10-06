@@ -12,14 +12,9 @@ version.workspace = true
 cfg-if.workspace = true
 dyn-clone.workspace = true
 serde.workspace = true
-web-sys = { workspace = true, optional = true }
 
 [lib]
 path = "lib.rs"
-
-[features]
-default = []
-dom = ["dep:web-sys"]
 
 [package.metadata.docs.rs]
 all-features = true

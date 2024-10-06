@@ -1,9 +1,7 @@
 use web_sys::Element;
 
-use floating_ui_utils::{
-    Coords,
-    dom::{DomElementOrWindow, get_window},
-};
+use crate::dom::{get_window, DomElementOrWindow};
+use floating_ui_utils::Coords;
 
 pub fn get_visual_offsets(_element: Option<&Element>) -> Coords {
     // TODO: web-sys does not support VisualViewport

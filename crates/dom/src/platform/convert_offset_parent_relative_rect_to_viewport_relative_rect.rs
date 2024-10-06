@@ -1,16 +1,15 @@
 use web_sys::{Element, Window};
 
 use floating_ui_core::ConvertOffsetParentRelativeRectToViewportRelativeRectArgs;
-use floating_ui_utils::{
-    Coords,
+use floating_ui_utils::{Coords, ElementOrWindow, Rect, Strategy};
+
+use crate::{
     dom::{
         get_document_element, get_node_name, get_node_scroll, is_overflow_element, is_top_layer,
         NodeScroll,
-    }, ElementOrWindow, Rect, Strategy,
-};
-
-use crate::{
-    platform::get_scale::get_scale, utils::get_bounding_client_rect::get_bounding_client_rect,
+    },
+    platform::get_scale::get_scale,
+    utils::get_bounding_client_rect::get_bounding_client_rect,
 };
 
 pub fn convert_offset_parent_relative_rect_to_viewport_relative_rect(

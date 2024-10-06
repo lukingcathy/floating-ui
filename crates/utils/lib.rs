@@ -14,8 +14,6 @@ pub use crate::strategy::*;
 use dyn_clone::DynClone;
 
 mod coordinate;
-#[cfg(feature = "dom")]
-pub mod dom;
 mod element;
 mod length;
 mod orientation;

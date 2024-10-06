@@ -1,16 +1,11 @@
 use web_sys::{wasm_bindgen::JsCast, CssStyleDeclaration, Element, Node};
 
-use floating_ui_core::{GetClippingRectArgs, RootBoundary};
-use floating_ui_utils::{
+use crate::{
     dom::{
         get_computed_style, get_document_element, get_node_name, get_overflow_ancestors,
         get_parent_node, is_containing_block, is_last_traversable_node, is_overflow_element,
         is_top_layer, OverflowAncestor,
     },
-    rect_to_client_rect, ClientRect, Rect, Strategy,
-};
-
-use crate::{
     platform::{get_scale::get_scale, Platform},
     types::Boundary,
     utils::{
@@ -18,6 +13,8 @@ use crate::{
         get_viewport_rect::get_viewport_rect, get_visual_offsets::get_visual_offsets,
     },
 };
+use floating_ui_core::{GetClippingRectArgs, RootBoundary};
+use floating_ui_utils::{rect_to_client_rect, ClientRect, Rect, Strategy};
 
 #[derive(Clone, Debug)]
 enum ElementOrRootBoundary {
@@ -173,7 +170,7 @@ pub fn get_clipping_rect(
     // TODO: cache
 
     let clipping_element_ancestors = match boundary {
-        floating_ui_core::Boundary::ClippingAncestors => match is_top_layer(element) {
+        Boundary::ClippingAncestors => match is_top_layer(element) {
             true => vec![],
             false => get_clipping_element_ancestors(element),
         },

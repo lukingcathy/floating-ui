@@ -1,12 +1,10 @@
-use floating_ui_utils::{
-    Coords,
-    dom::{
-        DomElementOrWindow, get_document_element, get_node_name, get_node_scroll,
-        is_overflow_element, NodeScroll,
-    }, Rect, Strategy,
-};
+use floating_ui_utils::{Coords, Rect, Strategy};
 
 use crate::{
+    dom::{
+        get_document_element, get_node_name, get_node_scroll, is_overflow_element,
+        DomElementOrWindow, NodeScroll,
+    },
     types::ElementOrVirtual,
     utils::{
         get_bounding_client_rect::get_bounding_client_rect,

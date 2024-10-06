@@ -69,33 +69,6 @@ impl From<Rect> for ClientRect {
     }
 }
 
-cfg_if::cfg_if! {
-    if #[cfg(feature = "dom")] {
-        impl ClientRect {
-            pub fn from_dom_rect_list(value: web_sys::DomRectList) -> Vec<Self> {
-                (0..value.length())
-                    .filter_map(|i| value.item(i).map(ClientRect::from))
-                    .collect()
-            }
-        }
-
-        impl From<web_sys::DomRect> for ClientRect {
-            fn from(value: web_sys::DomRect) -> Self {
-                Self {
-                    x: value.x(),
-                    y: value.y(),
-                    width: value.width(),
-                    height: value.height(),
-                    top: value.top(),
-                    right: value.right(),
-                    bottom: value.bottom(),
-                    left: value.left(),
-                }
-            }
-        }
-    }
-}
-
 /// 参与浮动运算的元素对象
 #[derive(Clone, Debug)]
 pub struct ElementRects {

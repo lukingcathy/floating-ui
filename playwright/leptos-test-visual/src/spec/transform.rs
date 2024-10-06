@@ -8,8 +8,8 @@ use leptos::{
 use wasm_bindgen::JsCast;
 
 use floating_ui_leptos::{
-    use_floating, DefaultVirtualElement, MiddlewareVec, Shift, ShiftOptions, UseFloatingOptions,
-    UseFloatingReturn, VirtualElement, VirtualElementOrNodeRef,
+    client_rect::to_client_rect, use_floating, DefaultVirtualElement, MiddlewareVec, Shift,
+    ShiftOptions, UseFloatingOptions, UseFloatingReturn, VirtualElement, VirtualElementOrNodeRef,
 };
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -60,7 +60,8 @@ pub fn Transform() -> impl IntoView {
                 Some(
                     (Box::new(
                         DefaultVirtualElement::new(Box::new(move || {
-                            context_element.get_bounding_client_rect().into()
+                            let dom_rect = context_element.get_bounding_client_rect();
+                            to_client_rect(dom_rect)
                         }))
                         .context_element(virtual_context_clone),
                     ) as Box<dyn VirtualElement<web_sys::Element>>)

@@ -1,8 +1,8 @@
 pub use arrow::*;
 #[doc(no_inline)]
 pub use floating_ui_dom::{
-    auto_update, compute_position, dom, AlignedPlacement, Alignment, ApplyState, ArrowData,
-    AutoPlacement, AutoPlacementData, AutoPlacementDataOverflow, AutoPlacementOptions,
+    auto_update, client_rect, compute_position, dom, AlignedPlacement, Alignment, ApplyState,
+    ArrowData, AutoPlacement, AutoPlacementData, AutoPlacementDataOverflow, AutoPlacementOptions,
     AutoUpdateOptions, Axis, Boundary, ClientRect, ComputePositionConfig, ComputePositionReturn,
     Coords, DefaultLimiter, DefaultVirtualElement, Derivable, DerivableFn, DetectOverflowOptions,
     Dimensions, ElementContext, ElementOrVirtual, ElementRects, FallbackStrategy, Flip, FlipData,

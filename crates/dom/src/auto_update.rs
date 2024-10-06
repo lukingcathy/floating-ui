@@ -1,16 +1,13 @@
 use std::{cell::RefCell, rc::Rc};
 
 use web_sys::{
-    AddEventListenerOptions,
-    Element, EventTarget, IntersectionObserver, IntersectionObserverEntry, IntersectionObserverInit,
-    ResizeObserver, ResizeObserverEntry, wasm_bindgen::{closure::Closure, JsCast, JsValue}, window,
-};
-
-use floating_ui_utils::dom::{
-    get_document_element, get_overflow_ancestors, get_window, OverflowAncestor,
+    wasm_bindgen::{closure::Closure, JsCast, JsValue},
+    window, AddEventListenerOptions, Element, EventTarget, IntersectionObserver,
+    IntersectionObserverEntry, IntersectionObserverInit, ResizeObserver, ResizeObserverEntry,
 };
 
 use crate::{
+    dom::{get_document_element, get_overflow_ancestors, get_window, OverflowAncestor},
     types::{ElementOrVirtual, OwnedElementOrVirtual},
     utils::get_bounding_client_rect::get_bounding_client_rect,
 };
@@ -52,7 +49,7 @@ fn observe_move(element: Element, on_move: Rc<dyn Fn()>) -> Box<dyn Fn()> {
             io.disconnect();
         }
 
-        _ = cleanup_observe_closure.take();
+        let _ = cleanup_observe_closure.take();
     };
     let cleanup_rc = Rc::new(cleanup);
     type RefreshFn = Box<dyn Fn(bool, f64)>;

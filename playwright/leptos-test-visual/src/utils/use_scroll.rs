@@ -1,14 +1,13 @@
 use std::rc::Rc;
 
-use leptos::{html::Div, *};
-use wasm_bindgen::{closure::Closure, JsCast};
-use web_sys::EventTarget;
-
 use floating_ui_leptos::{
     dom::{get_overflow_ancestors, OverflowAncestor},
     use_floating, DetectOverflowOptions, IntoReference, MiddlewareVec, Padding, Placement, Shift,
     ShiftOptions, Strategy, UseFloatingOptions, UseFloatingReturn,
 };
+use leptos::{html::Div, *};
+use wasm_bindgen::{closure::Closure, JsCast};
+use web_sys::EventTarget;
 
 pub struct UseScrollOptions {
     pub reference_ref: NodeRef<Div>,

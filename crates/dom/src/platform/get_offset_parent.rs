@@ -1,11 +1,9 @@
-use web_sys::{Element, HtmlElement, wasm_bindgen::JsCast};
-use web_sys::Window;
-
-use floating_ui_utils::dom::{
+use crate::dom::{
     get_computed_style, get_containing_block, get_parent_node, get_window, is_containing_block,
     is_element, is_html_element, is_last_traversable_node, is_table_element, is_top_layer,
 };
 use floating_ui_utils::OwnedElementOrWindow;
+use web_sys::{wasm_bindgen::JsCast, Element, HtmlElement, Window};
 
 use crate::utils::is_static_positioned::is_static_positioned;
 

@@ -1,9 +1,7 @@
-use web_sys::{Element, HtmlElement, wasm_bindgen::JsCast};
+use web_sys::{wasm_bindgen::JsCast, Element, HtmlElement};
 
-use floating_ui_utils::{
-    Dimensions,
-    dom::{get_computed_style, is_html_element},
-};
+use crate::dom::{get_computed_style, is_html_element};
+use floating_ui_utils::Dimensions;
 
 #[derive(Clone, Debug)]
 pub struct CssDimensions {

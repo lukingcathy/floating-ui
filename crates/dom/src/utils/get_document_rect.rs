@@ -1,11 +1,8 @@
 use web_sys::Element;
 
-use floating_ui_utils::{
-    dom::{get_document_element, get_node_scroll},
-    Rect,
-};
-
+use crate::dom::{get_document_element, get_node_scroll};
 use crate::platform::is_rtl::is_rtl;
+use floating_ui_utils::Rect;
 
 use super::get_window_scroll_bar_x::get_window_scroll_bar_x;
 

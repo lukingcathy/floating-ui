@@ -16,7 +16,7 @@ pub use floating_ui_core::{
 };
 #[doc(no_inline)]
 pub use floating_ui_utils::{
-    dom, AlignedPlacement, Alignment, Axis, ClientRect, Coords, Dimensions, ElementRects, Length,
+    AlignedPlacement, Alignment, Axis, ClientRect, Coords, Dimensions, ElementRects, Length,
     Padding, PartialSideLength, Placement, Rect, Side, SideLength, Strategy, VirtualElement,
 };
 
@@ -27,6 +27,8 @@ pub use crate::types::*;
 use self::platform::Platform;
 
 mod auto_update;
+pub mod client_rect;
+pub mod dom;
 mod middleware;
 mod platform;
 mod types;

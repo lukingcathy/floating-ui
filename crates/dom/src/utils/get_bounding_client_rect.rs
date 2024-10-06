@@ -1,9 +1,8 @@
-use floating_ui_utils::{
-    dom::{get_computed_style, get_window, DomElementOrWindow},
-    rect_to_client_rect, ClientRect, Coords, Rect,
-};
+use floating_ui_utils::{rect_to_client_rect, ClientRect, Coords, Rect};
 
+use crate::client_rect::to_client_rect;
 use crate::{
+    dom::{get_computed_style, get_window, DomElementOrWindow},
     platform::get_scale::get_scale,
     types::ElementOrVirtual,
     utils::get_visual_offsets::{get_visual_offsets, should_add_visual_offsets},
@@ -16,7 +15,10 @@ pub fn get_bounding_client_rect(
     offset_parent: Option<DomElementOrWindow>,
 ) -> ClientRect {
     let client_rect = match &element_or_virtual {
-        ElementOrVirtual::Element(element) => element.get_bounding_client_rect().into(),
+        ElementOrVirtual::Element(element) => {
+            let dom_rect = element.get_bounding_client_rect();
+            to_client_rect(dom_rect)
+        }
         ElementOrVirtual::VirtualElement(virtual_element) => {
             virtual_element.get_bounding_client_rect()
         }

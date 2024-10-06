@@ -5,7 +5,7 @@ use web_sys::{
     ShadowRoot, Window,
 };
 
-use crate::ElementOrWindow;
+use floating_ui_utils::ElementOrWindow;
 
 #[derive(Clone, Debug)]
 pub enum DomNodeOrWindow<'a> {
